@@ -1,0 +1,192 @@
+/* ============================================
+   DMart Delivery - Auth Styles (auth.css)
+   ============================================ */
+
+/* --- Auth Page Layout --- */
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: radial-gradient(ellipse at top, rgba(22, 163, 74, 0.12) 0%, var(--bg-dark) 70%);
+}
+
+.auth-card {
+    background: var(--bg-surface);
+    border-radius: var(--radius-xl);
+    padding: 48px;
+    max-width: 440px;
+    width: 100%;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-lg);
+    animation: fadeInUp 0.6s ease;
+}
+
+.auth-logo {
+    text-align: center;
+    margin-bottom: 32px;
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.auth-logo span {
+    color: var(--primary);
+}
+
+.auth-title {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.auth-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+/* --- Auth Divider --- */
+.auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 24px 0;
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+/* --- Auth Footer --- */
+.auth-footer {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.auth-footer a {
+    color: var(--primary);
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.auth-footer a:hover {
+    color: var(--primary-light);
+}
+
+/* --- Auth Error --- */
+.auth-error {
+    background: var(--error-bg);
+    color: var(--error);
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    margin-bottom: 20px;
+    display: none;
+}
+
+.auth-error.show {
+    display: block;
+}
+
+/* --- Password Toggle --- */
+.password-toggle {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 18px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.password-toggle:hover {
+    color: var(--text-secondary);
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+/* --- Role Selector --- */
+.role-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.role-option {
+    padding: 16px 12px;
+    border-radius: var(--radius-md);
+    border: 2px solid var(--border);
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.role-option:hover {
+    border-color: var(--primary-light);
+}
+
+.role-option.selected {
+    border-color: var(--primary);
+    background: rgba(22, 163, 74, 0.08);
+}
+
+.role-icon {
+    font-size: 24px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* --- Auth Responsive --- */
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 32px 24px;
+    }
+
+    .auth-logo {
+        font-size: 24px;
+    }
+
+    .auth-title {
+        font-size: 20px;
+    }
+
+    .role-selector {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .role-option {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-align: left;
+    }
+
+    .role-icon {
+        margin-bottom: 0;
+    }
+}
