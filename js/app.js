@@ -321,7 +321,7 @@
   /* ============================================================
      Boot
      ============================================================ */
-  document.addEventListener('DOMContentLoaded', function () {
+  function boot() {
     /* Initialise state if needed */
     if (!DMart.state) {
       DMart.state = { user: null, cart: [], wishlist: [], orders: [], currentPage: 'login', currentDept: '' };
@@ -334,5 +334,11 @@
     } else {
       DMart.navigate('login');
     }
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
 })();
