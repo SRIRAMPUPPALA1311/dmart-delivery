@@ -934,6 +934,18 @@
     };
   };
 
+  DMart.getProductVariants = function(id) {
+    var parts = id.split('_');
+    if (parts.length < 3) {
+      var single = DMart.getProductById(id);
+      return single ? [single] : [];
+    }
+    var prefix = parts[0] + '_' + parts[1] + '_' + parts[2] + '_';
+    return allProducts.filter(function(p) {
+      return p.id.indexOf(prefix) === 0;
+    });
+  };
+
   console.log('DMart products loaded: ' + DMart.products.length + ' products');
 
 })();

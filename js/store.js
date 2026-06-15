@@ -202,11 +202,11 @@
     var qty = cartItem ? cartItem.qty : 0;
 
     var h = '';
-    h += '<div class="product-card" data-product-id="' + product.id + '" style="background:white;border-radius:16px;border:1px solid var(--border);overflow:hidden;transition:var(--transition);cursor:pointer;position:relative;display:flex;flex-direction:column;min-height:320px;">';
+    h += '<div class="product-card" data-product-id="' + product.id + '" style="background:white;border-radius:16px;border:1px solid var(--border);overflow:hidden;transition:var(--transition);cursor:pointer;position:relative;display:flex;flex-direction:column;min-height:340px;box-shadow:var(--shadow);">';
     
     /* Image Section */
     var imgUrl = product.imageUrl || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80';
-    h += '<div class="product-image" style="width:100%;height:160px;background:#f8fafc;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;padding:12px;">';
+    h += '<div class="product-image" style="width:100%;height:140px;background:#f8fafc;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;padding:12px;">';
     h += '<img src="' + imgUrl + '" alt="' + escHtml(product.name) + '" style="max-width:100%;max-height:100%;object-fit:contain;transition:transform 0.3s;" class="card-img">';
     
     if (product.discount > 0) {
@@ -223,7 +223,22 @@
     h += '<div class="product-info" style="padding:12px;display:flex;flex-direction:column;flex:1;">';
     h += '<div class="product-brand" style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">' + escHtml(product.brand) + '</div>';
     h += '<div class="product-name" style="font-size:14px;font-weight:700;margin:4px 0 8px;color:var(--text-primary);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;height:36px;">' + escHtml(product.name) + '</div>';
-    h += '<div style="font-size:11px;color:var(--text-muted);font-weight:600;margin-bottom:8px;">' + escHtml(product.unit || '1 unit') + '</div>';
+    
+    /* Variant Selector */
+    var variants = DMart.getProductVariants(product.id);
+    if (variants.length > 1) {
+      h += '<div class="product-card-variants" onclick="event.stopPropagation();" style="margin-bottom:8px;">';
+      h += '<select class="product-variant-select" onchange="DMart.Store.changeVariant(this, \'' + product.id + '\')" style="width:100%;padding:5px 8px;border-radius:6px;border:1px solid var(--border);font-size:12px;font-weight:600;color:var(--text-secondary);outline:none;background:#f8fafc;cursor:pointer;">';
+      for (var v = 0; v < variants.length; v++) {
+        var vr = variants[v];
+        var isSel = vr.id === product.id ? ' selected' : '';
+        h += '<option value="' + vr.id + '"' + isSel + '>' + escHtml(vr.unit) + ' - ' + DMart.utils.formatCurrency(vr.price) + '</option>';
+      }
+      h += '</select>';
+      h += '</div>';
+    } else {
+      h += '<div style="font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:8px;padding:4px 0;">' + escHtml(product.unit || '1 unit') + '</div>';
+    }
     
     h += '<div style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;min-height:36px;">';
     
@@ -236,16 +251,16 @@
     h += '</div>';
 
     // Actions block - Transition Stepper
-    h += '<div class="product-card-action" style="display:flex;align-items:center;justify-content:flex-end;width:90px;">';
+    h += '<div class="product-card-action" style="display:flex;align-items:center;justify-content:flex-end;width:95px;">';
     if (product.inStock) {
       if (qty > 0) {
-        h += '<div class="stepper-control" onclick="event.stopPropagation();" style="display:flex;align-items:center;background:#16a34a;color:white;border-radius:8px;overflow:hidden;height:32px;width:80px;justify-content:space-between;box-shadow:0 2px 4px rgba(22,163,74,0.2);">';
-        h += '<button class="stepper-btn minus" onclick="DMart.Store.updateQtyClick(event, \'' + product.id + '\', ' + (qty - 1) + ')" style="border:none;background:transparent;color:white;width:26px;height:32px;font-weight:800;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">−</button>';
+        h += '<div class="stepper-control" onclick="event.stopPropagation();" style="display:flex;align-items:center;background:var(--primary);color:white;border-radius:8px;overflow:hidden;height:32px;width:90px;justify-content:space-between;box-shadow:0 2px 4px rgba(24,20,243,0.15);">';
+        h += '<button class="stepper-btn minus" onclick="DMart.Store.updateQtyClick(event, \'' + product.id + '\', ' + (qty - 1) + ')" style="border:none;background:transparent;color:white;width:28px;height:32px;font-weight:800;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">−</button>';
         h += '<span class="stepper-value" style="font-weight:800;font-size:13px;color:white;">' + qty + '</span>';
-        h += '<button class="stepper-btn plus" onclick="DMart.Store.updateQtyClick(event, \'' + product.id + '\', ' + (qty + 1) + ')" style="border:none;background:transparent;color:white;width:26px;height:32px;font-weight:800;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">+</button>';
+        h += '<button class="stepper-btn plus" onclick="DMart.Store.updateQtyClick(event, \'' + product.id + '\', ' + (qty + 1) + ')" style="border:none;background:transparent;color:white;width:28px;height:32px;font-weight:800;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">+</button>';
         h += '</div>';
       } else {
-        h += '<button class="add-btn-outline" onclick="event.stopPropagation();DMart.Store.addClick(event, \'' + product.id + '\')" style="background:transparent;color:#16a34a;border:1.5px solid rgba(22, 163, 74, 0.4);padding:4px 14px;border-radius:8px;font-weight:800;font-size:12px;cursor:pointer;transition:var(--transition);height:32px;width:70px;display:flex;align-items:center;justify-content:center;">ADD</button>';
+        h += '<button class="add-btn-outline" onclick="event.stopPropagation();DMart.Store.addClick(event, \'' + product.id + '\')" style="background:transparent;color:var(--primary);border:1.5px solid rgba(24, 20, 243, 0.4);padding:4px 12px;border-radius:8px;font-weight:800;font-size:12px;cursor:pointer;transition:var(--transition);height:32px;width:75px;display:flex;align-items:center;justify-content:center;">ADD</button>';
       }
     } else {
       h += '<button class="add-btn-outline disabled" disabled style="opacity:0.5;cursor:not-allowed;background:#f1f5f9;color:var(--text-muted);border:1px solid var(--border);height:32px;font-size:11px;font-weight:700;width:80px;text-align:center;border-radius:8px;">Sold Out</button>';
@@ -271,7 +286,7 @@
     }
     for (var p = start; p <= end; p++) {
       var isActive = p === page;
-      h += '<button class="page-btn' + (isActive ? ' active' : '') + '" data-page="' + p + '" style="width:36px;height:36px;border-radius:8px;border:' + (isActive ? '1px solid #16a34a' : '1px solid var(--border)') + ';background:' + (isActive ? '#16a34a' : 'white') + ';color:' + (isActive ? 'white' : 'var(--text-primary)') + ';font-weight:700;cursor:pointer;">' + p + '</button>';
+      h += '<button class="page-btn' + (isActive ? ' active' : '') + '" data-page="' + p + '" style="width:36px;height:36px;border-radius:8px;border:' + (isActive ? '1px solid var(--primary)' : '1px solid var(--border)') + ';background:' + (isActive ? 'var(--primary)' : 'white') + ';color:' + (isActive ? 'white' : 'var(--text-primary)') + ';font-weight:700;cursor:pointer;">' + p + '</button>';
     }
     if (end < totalPages) {
       if (end < totalPages - 1) h += '<span style="color:var(--text-muted);">…</span>';
@@ -359,7 +374,7 @@
       grid.addEventListener('click', function (e) {
         var card = e.target.closest('.product-card');
         if (!card) return;
-        if (e.target.closest('.add-btn-outline') || e.target.closest('.stepper-control') || e.target.closest('.product-wishlist')) return;
+        if (e.target.closest('.add-btn-outline') || e.target.closest('.stepper-control') || e.target.closest('.product-wishlist') || e.target.closest('.product-card-variants')) return;
         var pid = card.getAttribute('data-product-id');
         if (pid) Store.showProduct(pid);
       });
@@ -459,6 +474,21 @@
     
     var imgUrl = product.imageUrl || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80';
     
+    var variants = DMart.getProductVariants(product.id);
+    var variantHtml = '';
+    if (variants.length > 1) {
+      variantHtml += '<div class="product-modal-variants" style="margin-bottom:16px;">' +
+             '<label style="display:block;font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:6px;">Select Variant:</label>' +
+             '<select class="product-variant-select" id="modal-variant-select" style="width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--border);font-size:13px;font-weight:600;color:var(--text-primary);outline:none;background:#f8fafc;cursor:pointer;">' +
+               variants.map(function(vr) {
+                 return '<option value="' + vr.id + '"' + (vr.id === product.id ? ' selected' : '') + '>' + escHtml(vr.unit) + ' - ' + DMart.utils.formatCurrency(vr.price) + '</option>';
+               }).join('') +
+             '</select>' +
+           '</div>';
+    } else {
+      variantHtml += '<div class="product-modal-unit" style="font-size:13px;color:var(--text-muted);font-weight:600;margin-bottom:16px;">Unit: ' + escHtml(product.unit || '1 unit') + '</div>';
+    }
+
     overlay.innerHTML = '' +
       '<div class="modal product-modal" style="max-width:700px;width:90%;background:white;border-radius:24px;border:1px solid var(--border);box-shadow:var(--shadow-lg);padding:24px;position:relative;">' +
         '<button class="modal-close" id="modal-close-btn" style="position:absolute;top:16px;right:16px;border:none;background:#f1f5f9;color:var(--text-muted);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;">✕</button>' +
@@ -475,7 +505,7 @@
               '<span class="current" style="font-size:24px;font-weight:800;color:var(--text-primary);">' + DMart.utils.formatCurrency(product.price) + '</span>' +
               (product.discount > 0 && product.originalPrice ? '<span class="original" style="font-size:14px;color:var(--text-muted);text-decoration:line-through;">' + DMart.utils.formatCurrency(product.originalPrice) + '</span>' : '') +
             '</div>' +
-            '<div class="product-modal-unit" style="font-size:13px;color:var(--text-muted);font-weight:600;margin-bottom:16px;">Unit: ' + escHtml(product.unit || '1 unit') + '</div>' +
+            variantHtml +
             '<div class="product-modal-tags" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;">' + (product.tags || []).map(function (t) { return '<span class="tag" style="background:#f1f5f9;color:var(--text-secondary);font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;">' + escHtml(t) + '</span>'; }).join('') + '</div>' +
             
             '<div class="product-modal-qty" style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">' +
@@ -489,7 +519,7 @@
             
             '<div class="product-modal-actions" style="margin-top:auto;display:flex;gap:12px;">' +
               (product.inStock
-                ? '<button class="btn btn-primary" id="modal-add-cart" style="flex:1;background:#16a34a;color:white;border:none;padding:12px;border-radius:12px;font-weight:700;cursor:pointer;">Add / Update Cart</button>'
+                ? '<button class="btn btn-primary" id="modal-add-cart" style="flex:1;background:var(--primary);color:white;border:none;padding:12px;border-radius:12px;font-weight:700;cursor:pointer;">Add / Update Cart</button>'
                 : '<button class="btn btn-primary disabled" disabled style="flex:1;background:#e2e8f0;color:var(--text-muted);border:none;padding:12px;border-radius:12px;font-weight:700;cursor:not-allowed;">Out of Stock</button>') +
               '<button class="btn btn-secondary' + (inWish ? ' active' : '') + '" id="modal-wish-btn" style="border:1px solid var(--border);background:' + (inWish ? '#fee2e2' : 'white') + ';color:' + (inWish ? '#ef4444' : 'var(--text-primary)') + ';padding:12px 16px;border-radius:12px;font-weight:700;cursor:pointer;">♥</button>' +
             '</div>' +
@@ -498,6 +528,15 @@
       '</div>';
 
     document.body.appendChild(overlay);
+
+    /* variant dropdown change listener */
+    var modalVarSel = document.getElementById('modal-variant-select');
+    if (modalVarSel) {
+      modalVarSel.addEventListener('change', function () {
+        overlay.remove();
+        Store.showProduct(modalVarSel.value);
+      });
+    }
 
     /* qty */
     var qtyEl = document.getElementById('modal-qty');
@@ -536,6 +575,21 @@
     overlay.addEventListener('click', function (e) {
       if (e.target === overlay) overlay.remove();
     });
+  };
+
+  Store.changeVariant = function (selectEl, currentProductId) {
+    var newProductId = selectEl.value;
+    var card = selectEl.closest('.product-card');
+    if (!card) return;
+
+    var newProduct = DMart.getProductById(newProductId);
+    if (!newProduct) return;
+
+    var temp = document.createElement('div');
+    temp.innerHTML = renderProductCard(newProduct);
+    var newCard = temp.firstElementChild;
+
+    card.parentNode.replaceChild(newCard, card);
   };
 
   /* ---- Wishlist toggle on card ---- */

@@ -29,16 +29,18 @@
 
     /* Location Badge */
     h += '<div class="navbar-location" style="display:flex;align-items:center;gap:6px;margin-left:20px;border-left:1px solid var(--border);padding-left:20px;font-size:13px;">';
-    h += '<span style="color:#16a34a;font-weight:700;">⚡ 10 mins</span>';
+    h += '<span style="color:var(--primary);font-weight:700;">⚡ 10 mins</span>';
     h += '<span style="color:var(--text-muted);">|</span>';
-    h += '<span style="color:var(--text-secondary);">📍 Mumbai, MH</span>';
+    h += '<span style="color:var(--text-secondary);">📍 Mancherial District, TS</span>';
     h += '</div>';
 
     /* Nav links */
     h += '<div class="nav-links" style="display:flex;align-items:center;gap:8px;margin-left:auto;margin-right:16px;">';
     h += '<a class="nav-link' + (page === 'store' ? ' active' : '') + '" onclick="DMart.navigate(\'store\')">🏪 Shop</a>';
     h += '<a class="nav-link' + (page === 'orders' ? ' active' : '') + '" onclick="DMart.navigate(\'orders\')">📦 Orders</a>';
-    if (isAdmin) {
+    h += '<a class="nav-link' + (page === 'tickets' ? ' active' : '') + '" onclick="DMart.navigate(\'tickets\')">🎧 Support</a>';
+    h += '<a class="nav-link' + (page === 'auditing' ? ' active' : '') + '" onclick="DMart.navigate(\'auditing\')">🛡️ Auditing</a>';
+    if (isAdmin || user.role === 'sales' || user.role === 'delivery') {
       h += '<a class="nav-link' + (page === 'dashboard' ? ' active' : '') + '" onclick="DMart.navigate(\'dashboard\')">📊 Dashboard</a>';
     }
     h += '</div>';
@@ -47,16 +49,16 @@
     h += '<div class="nav-actions" style="display:flex;align-items:center;gap:12px;">';
 
     /* Cart */
-    h += '<button class="btn cart-badge" onclick="DMart.Cart.toggleSidebar()" style="background:#16a34a;color:white;padding:10px 16px;border-radius:8px;font-weight:700;display:flex;align-items:center;gap:8px;border:none;box-shadow:none;position:relative;">';
+    h += '<button class="btn cart-badge" onclick="DMart.Cart.toggleSidebar()" style="background:var(--primary);color:white;padding:10px 16px;border-radius:8px;font-weight:700;display:flex;align-items:center;gap:8px;border:none;box-shadow:none;position:relative;">';
     h += '🛒 Cart';
-    h += '<span class="cart-count" id="cart-count" style="background:#ffffff;color:#16a34a;font-size:11px;font-weight:800;min-width:18px;height:18px;border-radius:9px;display:' + (cartCount > 0 ? 'flex' : 'none') + ';align-items:center;justify-content:center;margin-left:2px;">' + cartCount + '</span>';
+    h += '<span class="cart-count" id="cart-count" style="background:#ffffff;color:var(--primary);font-size:11px;font-weight:800;min-width:18px;height:18px;border-radius:9px;display:' + (cartCount > 0 ? 'flex' : 'none') + ';align-items:center;justify-content:center;margin-left:2px;">' + cartCount + '</span>';
     h += '</button>';
 
     /* User */
     if (loggedIn) {
       h += '<div class="user-menu-wrapper" id="user-menu-wrapper">';
       h += '<button class="user-avatar-btn" id="user-avatar-btn" onclick="DMart.toggleUserMenu()" style="background:none;border:none;cursor:pointer;">';
-      h += '<span class="user-avatar" style="width:36px;height:36px;border-radius:50%;background:#16a34a;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:14px;">' + escHtml(user.avatar || '??') + '</span>';
+      h += '<span class="user-avatar" style="width:36px;height:36px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:14px;">' + escHtml(user.avatar || '??') + '</span>';
       h += '</button>';
       h += '<div class="user-dropdown" id="user-dropdown">';
       h += '<div class="user-dropdown-header">';
@@ -202,7 +204,7 @@
     params = params || {};
 
     /* Auth redirect */
-    var protectedPages = ['checkout', 'orders', 'dashboard'];
+    var protectedPages = ['checkout', 'orders', 'dashboard', 'tickets', 'auditing'];
     if (protectedPages.indexOf(page) !== -1 && !DMart.isLoggedIn()) {
       DMart.navigate('login');
       return;
@@ -233,6 +235,12 @@
         break;
       case 'dashboard':
         module = DMart.Dashboard || DashboardFallback;
+        break;
+      case 'tickets':
+        module = DMart.Tickets;
+        break;
+      case 'auditing':
+        module = DMart.Auditing;
         break;
       case 'orders':
         module = OrdersPage;
@@ -291,6 +299,11 @@
     } else {
       history.pushState(stateObj, '', url);
     }
+
+    /* Render floating role switcher */
+    if (typeof renderRoleSwitcher === 'function') {
+      renderRoleSwitcher();
+    }
   };
 
   /* ============================================================
@@ -321,6 +334,80 @@
   /* ============================================================
      Boot
      ============================================================ */
+  function renderRoleSwitcher() {
+    var existing = document.getElementById('role-switcher-widget');
+    if (existing) existing.remove();
+
+    var user = DMart.state.user;
+    if (!user) return; // Only show if logged in
+
+    var container = document.createElement('div');
+    container.id = 'role-switcher-widget';
+    container.className = 'role-switcher-container';
+    
+    var h = '';
+    h += '<button class="role-switcher-pill" onclick="DMart.toggleRoleDropdown()">';
+    h += '🔑 Role: <strong style="text-transform:capitalize">' + user.role.replace('_', ' ') + '</strong> ▾';
+    h += '</button>';
+    h += '<div class="role-switcher-dropdown" id="role-switcher-dropdown">';
+    h += '<div style="padding:4px 12px; font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Switch Role (Test)</div>';
+    h += '<div class="role-switcher-item" onclick="DMart.setRole(\'customer\')">👤 Customer</div>';
+    h += '<div class="role-switcher-item" onclick="DMart.setRole(\'super_manager\')">👑 Super Manager</div>';
+    h += '<div class="role-switcher-item" onclick="DMart.setRole(\'manager\')">📋 Store Manager</div>';
+    h += '<div class="role-switcher-item" onclick="DMart.setRole(\'sales\')">🏷️ Sales Man</div>';
+    h += '<div class="role-switcher-item" onclick="DMart.setRole(\'delivery\')">🚴 Delivery Partner</div>';
+    h += '</div>';
+
+    container.innerHTML = h;
+    document.body.appendChild(container);
+  }
+
+  DMart.toggleRoleDropdown = function() {
+    var dd = document.getElementById('role-switcher-dropdown');
+    if (dd) dd.classList.toggle('open');
+  };
+
+  DMart.setRole = function(role) {
+    if (!DMart.state.user) return;
+    DMart.state.user.role = role;
+    
+    var roleNames = {
+      customer: 'Priya Sharma',
+      super_manager: 'Karan Johar',
+      manager: 'Rajesh Kumar',
+      sales: 'Arjun Singh',
+      delivery: 'Vijay Kumar'
+    };
+    DMart.state.user.name = roleNames[role];
+    
+    var initials = {
+      customer: 'PS',
+      super_manager: 'KJ',
+      manager: 'RK',
+      sales: 'AS',
+      delivery: 'VK'
+    };
+    DMart.state.user.avatar = initials[role];
+    
+    DMart.saveState();
+    DMart.utils.toast('Switched role to ' + role.replace('_', ' ') + '!', 'success');
+    
+    // Close dropdown
+    var dd = document.getElementById('role-switcher-dropdown');
+    if (dd) dd.classList.remove('open');
+    
+    // Refresh page
+    DMart.navigate(DMart.state.currentPage || 'store');
+  };
+
+  /* Close role dropdown on outside click */
+  document.addEventListener('click', function (e) {
+    var dd = document.getElementById('role-switcher-dropdown');
+    if (dd && dd.classList.contains('open') && !e.target.closest('#role-switcher-widget')) {
+      dd.classList.remove('open');
+    }
+  });
+
   function boot() {
     /* Initialise state if needed */
     if (!DMart.state) {

@@ -696,3 +696,79 @@
     }
 }
 
+/* ============================================================
+   Product Card Variant Selector & Inline Qty Controls
+   ============================================================ */
+.product-card-variants {
+    margin-top: 6px;
+    margin-bottom: 8px;
+}
+
+.product-variant-select {
+    width: 100%;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #f8fafc;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.product-variant-select:focus {
+    border-color: var(--primary);
+    background: white;
+}
+
+.product-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.card-qty-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--primary);
+    color: white;
+    border-radius: var(--radius-md);
+    padding: 2px;
+    width: 100%;
+    height: 38px;
+    box-shadow: 0 4px 10px rgba(24, 20, 243, 0.15);
+    animation: fadeIn 0.2s ease;
+}
+
+.card-qty-btn {
+    width: 32px;
+    height: 34px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-weight: 800;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+.card-qty-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.card-qty-value {
+    font-weight: 800;
+    font-size: 14px;
+    min-width: 24px;
+    text-align: center;
+}
+
+

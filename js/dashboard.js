@@ -1269,6 +1269,14 @@
   // ============================================================
 
   function render(params) {
+    var user = DMart.state.user || {};
+    if (user.role === 'delivery') {
+      return renderDeliveryDashboard();
+    }
+    if (user.role === 'sales') {
+      return renderSalesDashboard();
+    }
+
     params = params || {};
     var dept = params.dept || 'sales';
     var config = dashboardConfigs[dept];
@@ -1293,6 +1301,7 @@
     // Header
     html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:16px;">';
     html += '<div>';
+    h += ''; // placeholder to avoid syntax errors
     html += '<h1 style="font-size:26px;font-weight:700;color:var(--text-primary);margin:0 0 6px 0;display:flex;align-items:center;gap:10px;">';
     html += '<span style="font-size:28px;">' + config.icon + '</span> ' + config.title;
     html += '</h1>';
@@ -1306,20 +1315,25 @@
     html += '</div>';
     html += '</div>';
 
-    // KPI Cards
-    html += renderKPIs(config.kpis);
+    // If support tab is selected, render Ticket Resolver instead of standard table/charts
+    if (dept === 'support' && DMart.Tickets) {
+      html += DMart.Tickets.render();
+    } else {
+      // KPI Cards
+      html += renderKPIs(config.kpis);
 
-    // Charts
-    html += renderCharts(config.charts, dept);
+      // Charts
+      html += renderCharts(config.charts, dept);
 
-    // Data Table
-    html += renderTable(config.table);
+      // Data Table
+      html += renderTable(config.table);
 
-    // Team + Activity side by side
-    html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(400px,1fr));gap:20px;">';
-    html += renderTeam(config.team);
-    html += renderActivities(config.activities);
-    html += '</div>';
+      // Team + Activity side by side
+      html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(400px,1fr));gap:20px;">';
+      html += renderTeam(config.team);
+      html += renderActivities(config.activities);
+      html += '</div>';
+    }
 
     html += '</div>'; // main-with-sidebar
     html += '</div>'; // outer flex
@@ -1327,13 +1341,156 @@
     return html;
   }
 
+  /* ---- Delivery Partner Dashboard ---- */
+  function renderDeliveryDashboard() {
+    var orders = DMart.state.orders || [];
+    var pendingOrders = orders.filter(function(o) { return o.status !== 'delivered'; });
+    var completedOrders = orders.filter(function(o) { return o.status === 'delivered'; });
+
+    var h = '';
+    h += '<div style="max-width:1000px; margin:0 auto; padding:32px 16px; animation:fadeIn 0.4s ease;">';
+    h += '<h1 style="font-family:var(--font-display); font-size:26px; font-weight:800; color:var(--text-primary); margin-bottom:4px;">🚴 Delivery Partner Hub</h1>';
+    h += '<p style="font-size:14px; color:var(--text-secondary); margin-bottom:24px;">Manage deliveries, check directions, and update drop-off statuses in Mancherial District.</p>';
+
+    /* Stats Grid */
+    h += '<div class="audit-stats-grid" style="margin-bottom:24px; display:grid; grid-template-columns:repeat(3, 1fr); gap:16px;">';
+    h += '<div class="audit-stat-card" style="background:white; border-radius:10px; border:1px solid var(--border); padding:16px; box-shadow:var(--shadow);"><strong>Pending Runs</strong><div style="font-size:24px; font-weight:800; color:var(--primary); margin-top:8px;">' + pendingOrders.length + ' Orders</div></div>';
+    h += '<div class="audit-stat-card" style="background:white; border-radius:10px; border:1px solid var(--border); padding:16px; box-shadow:var(--shadow);"><strong>Delivered Today</strong><div style="font-size:24px; font-weight:800; color:var(--success); margin-top:8px;">' + completedOrders.length + ' Orders</div></div>';
+    h += '<div class="audit-stat-card" style="background:white; border-radius:10px; border:1px solid var(--border); padding:16px; box-shadow:var(--shadow);"><strong>Earnings Today</strong><div style="font-size:24px; font-weight:800; color:var(--text-primary); margin-top:8px;">' + fmtCur(completedOrders.length * 40 + 120) + '</div></div>';
+    h += '</div>';
+
+    /* Map & Run Sheet */
+    h += '<div class="audit-grid" style="display:grid; grid-template-columns:1.8fr 1.2fr; gap:24px;">';
+    
+    /* Left: Run Sheet list */
+    h += '<div class="audit-table-card" style="background:white; border-radius:12px; border:1px solid var(--border); padding:24px; box-shadow:var(--shadow);">';
+    h += '<h3 style="font-family:var(--font-display); font-size:16px; font-weight:800; color:var(--text-primary); margin-bottom:16px;">Assigned Run Sheet</h3>';
+    if (orders.length === 0) {
+      h += '<div style="padding:32px; text-align:center; color:var(--text-secondary);">No orders have been placed yet. Go to shop and place orders first!</div>';
+    } else {
+      orders.forEach(function (order) {
+        h += '<div style="padding:16px; border:1px solid var(--border); border-radius:12px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; background:#fafbfc;">';
+        h += '<div>';
+        h += '<div style="font-weight:800; font-size:14px; color:var(--text-primary);">' + order.id + ' · ' + escHtml(order.address.name) + '</div>';
+        h += '<div style="font-size:12px; color:var(--text-secondary); margin:4px 0;">📍 ' + escHtml(order.address.line1) + ', ' + escHtml(order.address.city) + ' (Pin: ' + escHtml(order.address.pincode) + ')</div>';
+        h += '<div style="font-size:11px; color:var(--text-muted);">Payment: ' + order.payment + ' · Total: ' + fmtCur(order.total) + '</div>';
+        h += '</div>';
+        
+        h += '<div style="display:flex; gap:8px;">';
+        if (order.status === 'confirmed') {
+          h += '<button class="btn btn-secondary btn-sm" onclick="DMart.Dashboard.updateDeliveryStatus(\'' + order.id + '\', \'out_for_delivery\')" style="background:var(--primary); color:white; border:none; padding:6px 12px; border-radius:6px; font-weight:700; cursor:pointer;">Mark Dispatched</button>';
+        } else if (order.status === 'out_for_delivery') {
+          h += '<button class="btn btn-success btn-sm" onclick="DMart.Dashboard.updateDeliveryStatus(\'' + order.id + '\', \'delivered\')" style="background:var(--success); color:white; border:none; padding:6px 12px; border-radius:6px; font-weight:700; cursor:pointer;">Mark Delivered</button>';
+        } else {
+          h += '<span style="background:rgba(65, 212, 48, 0.1); color:#2b931d; font-size:11px; font-weight:700; padding:4px 10px; border-radius:40px;">✅ Completed</span>';
+        }
+        h += '</div>';
+        h += '</div>';
+      });
+    }
+    h += '</div>';
+
+    /* Right: Route Directions Map Mock */
+    h += '<div class="audit-table-card" style="background:white; border-radius:12px; border:1px solid var(--border); padding:24px; box-shadow:var(--shadow); text-align:center;">';
+    h += '<h3 style="font-family:var(--font-display); font-size:16px; font-weight:800; color:var(--text-primary); margin-bottom:12px;">Active Route Guidance</h3>';
+    h += '<div style="width:100%; height:200px; background:#e4e9f0; border-radius:12px; display:flex; align-items:center; justify-content:center; color:var(--text-secondary); font-size:13px; font-weight:700; flex-direction:column; gap:8px; border:1px solid var(--border);">';
+    h += '<span style="font-size:28px;">🗺️</span> <span>Mancherial Hub Route Mapping</span>';
+    h += '<small style="color:var(--primary)">Region: MNCL Central, Telangana</small>';
+    h += '</div>';
+    h += '<div style="text-align:left; margin-top:16px; font-size:12px; line-height:1.6; color:var(--text-secondary);">';
+    h += '<strong>Delivery Instructions:</strong>';
+    h += '<ul style="margin-left:16px; padding-left:0;">';
+    h += '<li>Only deliver within the designated Mancherial district boundary lines.</li>';
+    h += '<li>Collect cash/UPI payment on delivery for COD orders.</li>';
+    h += '<li>Maintain cold storage lock temperatures under 5°C.</li>';
+    h += '</ul>';
+    h += '</div>';
+    h += '</div>';
+
+    h += '</div>'; /* /audit-grid */
+    h += '</div>';
+    return h;
+  }
+
+  /* ---- Sales Man Dashboard ---- */
+  function renderSalesDashboard() {
+    var products = DMart.products.slice(0, 40); // Preview first 40 products
+    var h = '';
+    h += '<div style="max-width:1000px; margin:0 auto; padding:32px 16px; animation:fadeIn 0.4s ease;">';
+    h += '<h1 style="font-family:var(--font-display); font-size:26px; font-weight:800; color:var(--text-primary); margin-bottom:4px;">🏷️ Sales Man - Inventory & Price Controls</h1>';
+    h += '<p style="font-size:14px; color:var(--text-secondary); margin-bottom:24px;">Manage stock levels, edit listing prices, and apply instant discount coupons for DMart stores.</p>';
+
+    h += '<div class="audit-table-card" style="background:white; border-radius:12px; border:1px solid var(--border); padding:24px; box-shadow:var(--shadow);">';
+    h += '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">';
+    h += '<h3 style="font-family:var(--font-display); font-size:16px; font-weight:800; color:var(--text-primary); margin:0;">Item Listings Manager</h3>';
+    h += '<input type="text" id="sales-search-field" onkeyup="DMart.Dashboard.filterSalesItems()" placeholder="Filter items..." style="padding:8px 12px; border-radius:8px; border:1px solid var(--border); font-size:13px; outline:none; width:220px; background:#f8fafc; color:var(--text-primary);">';
+    h += '</div>';
+
+    h += '<div style="overflow-x:auto; max-height:480px; overflow-y:auto; border:1px solid var(--border); border-radius:8px;">';
+    h += '<table class="data-table" style="width:100%; border-collapse:collapse; text-align:left;">';
+    h += '<thead style="background:#f8fafc; position:sticky; top:0; z-index:1;">';
+    h += '<tr style="font-size:11px; color:var(--text-secondary); text-transform:uppercase;">';
+    h += '<th style="padding:12px 16px; border-bottom:1px solid var(--border)">Item Name</th>';
+    h += '<th style="padding:12px 16px; border-bottom:1px solid var(--border)">Brand</th>';
+    h += '<th style="padding:12px 16px; border-bottom:1px solid var(--border)">Price</th>';
+    h += '<th style="padding:12px 16px; border-bottom:1px solid var(--border)">Discount</th>';
+    h += '<th style="padding:12px 16px; border-bottom:1px solid var(--border)">Stock Status</th>';
+    h += '<th style="padding:12px 16px; border-bottom:1px solid var(--border)">Actions</th>';
+    h += '</tr>';
+    h += '</thead>';
+    h += '<tbody id="sales-items-body">';
+    
+    products.forEach(function (p) {
+      h += renderSalesItemRow(p);
+    });
+
+    h += '</tbody>';
+    h += '</table>';
+    h += '</div>';
+    h += '</div>';
+    h += '</div>';
+    return h;
+  }
+
+  function renderSalesItemRow(p) {
+    var h = '';
+    h += '<tr style="font-size:13px; color:var(--text-primary)" class="sales-item-row" data-name="' + p.name.toLowerCase() + '" data-brand="' + p.brand.toLowerCase() + '">';
+    h += '<td style="padding:12px 16px; border-bottom:1px solid var(--border); font-weight:700;">' + p.emoji + ' ' + escHtml(p.name) + '</td>';
+    h += '<td style="padding:12px 16px; border-bottom:1px solid var(--border); color:var(--text-secondary)">' + escHtml(p.brand) + '</td>';
+    h += '<td style="padding:12px 16px; border-bottom:1px solid var(--border); font-weight:800;">' + fmtCur(p.price) + '</td>';
+    h += '<td style="padding:12px 16px; border-bottom:1px solid var(--border); color:var(--secondary); font-weight:800;">' + p.discount + '%</td>';
+    h += '<td style="padding:12px 16px; border-bottom:1px solid var(--border);">';
+    h += '<span style="background:' + (p.inStock ? 'rgba(65, 212, 48, 0.1); color:#2b931d;' : 'rgba(255, 75, 74, 0.1); color:#FF4B4A;') + ' padding:4px 10px; border-radius:4px; font-size:11px; font-weight:700;">' + (p.inStock ? 'In Stock' : 'Out of Stock') + '</span>';
+    h += '</td>';
+    h += '<td style="padding:12px 16px; border-bottom:1px solid var(--border);">';
+    h += '<div style="display:flex; gap:6px;">';
+    h += '<button class="btn btn-secondary btn-sm" onclick="DMart.Dashboard.editItemPrice(\'' + p.id + '\')" style="padding:4px 8px; font-size:11px; font-weight:700; border-radius:6px; cursor:pointer;">Price</button>';
+    h += '<button class="btn btn-secondary btn-sm" onclick="DMart.Dashboard.toggleItemStock(\'' + p.id + '\')" style="padding:4px 8px; font-size:11px; font-weight:700; border-radius:6px; cursor:pointer;">Stock</button>';
+    h += '</div>';
+    h += '</td>';
+    h += '</tr>';
+    return h;
+  }
+
   // ============================================================
   // Init - Draw Charts
   // ============================================================
 
   function init(params) {
+    var user = DMart.state.user || {};
+    if (user.role === 'delivery' || user.role === 'sales') {
+      return; // No charts for custom role views
+    }
+
     params = params || {};
     var dept = params.dept || 'sales';
+    
+    // If support tab is selected, run Ticket resolution initializer instead of Chart.js drawing
+    if (dept === 'support' && DMart.Tickets) {
+      DMart.Tickets.init();
+      return;
+    }
+
     var config = dashboardConfigs[dept];
     if (!config) {
       dept = 'sales';
@@ -1401,12 +1558,55 @@
   }
 
   // ============================================================
-  // Public API
+  // Delivery & Sales Helpers
   // ============================================================
 
   DMart.Dashboard = {
     render: render,
-    init: init
+    init: init,
+    updateDeliveryStatus: function(orderId, nextStatus) {
+      var order = DMart.state.orders.find(function(o) { return o.id === orderId; });
+      if (order) {
+        order.status = nextStatus;
+        DMart.saveState();
+        DMart.utils.toast('Order ' + orderId + ' status updated to ' + nextStatus.replace(/_/g, ' ') + '!', 'success');
+        DMart.navigate('dashboard');
+      }
+    },
+    editItemPrice: function(productId) {
+      var p = DMart.getProductById(productId);
+      if (!p) return;
+      var newPrice = prompt('Enter new price for ' + p.name + ':', p.price);
+      if (newPrice !== null && !isNaN(newPrice) && newPrice.trim() !== '') {
+        p.price = Math.round(Number(newPrice));
+        if (p.originalPrice) {
+          p.originalPrice = Math.round(p.price * (100 / (100 - p.discount)));
+        }
+        // Save back to localstorage if we want changes to persist
+        DMart.utils.toast(p.name + ' price updated to ' + fmtCur(p.price) + '!', 'success');
+        DMart.navigate('dashboard');
+      }
+    },
+    toggleItemStock: function(productId) {
+      var p = DMart.getProductById(productId);
+      if (!p) return;
+      p.inStock = !p.inStock;
+      DMart.utils.toast(p.name + ' is now ' + (p.inStock ? 'In Stock' : 'Out of Stock') + '!', 'success');
+      DMart.navigate('dashboard');
+    },
+    filterSalesItems: function() {
+      var query = document.getElementById('sales-search-field').value.toLowerCase().trim();
+      var rows = document.querySelectorAll('.sales-item-row');
+      rows.forEach(function(row) {
+        var name = row.getAttribute('data-name');
+        var brand = row.getAttribute('data-brand');
+        if (name.indexOf(query) !== -1 || brand.indexOf(query) !== -1) {
+          row.style.display = 'table-row';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
   };
 
 })();

@@ -49,9 +49,9 @@
     h += '<div class="input-group full-width"><label>Address Line 1</label><input type="text" class="input-field" id="addr-line1" placeholder="Flat / House No. / Building / Street"></div>';
     h += '<div class="input-group full-width"><label>Address Line 2 (Optional)</label><input type="text" class="input-field" id="addr-line2" placeholder="Landmark / Area"></div>';
 
-    h += '<div class="input-group"><label>City</label><input type="text" class="input-field" id="addr-city" placeholder="City"></div>';
-    h += '<div class="input-group"><label>State</label><input type="text" class="input-field" id="addr-state" placeholder="State"></div>';
-    h += '<div class="input-group full-width"><label>Pincode</label><input type="text" class="input-field" id="addr-pincode" placeholder="6-digit postal code" maxlength="6"></div>';
+    h += '<div class="input-group"><label>City</label><input type="text" class="input-field" id="addr-city" placeholder="City" value="Mancherial"></div>';
+    h += '<div class="input-group"><label>State</label><input type="text" class="input-field" id="addr-state" placeholder="State" value="Telangana"></div>';
+    h += '<div class="input-group full-width"><label>Pincode</label><input type="text" class="input-field" id="addr-pincode" placeholder="6-digit postal code" value="504208" maxlength="6"></div>';
 
     h += '</div>'; /* /address-grid */
     h += '<label class="checkbox-label"><input type="checkbox" id="save-address" checked> Save this address for future orders</label>';
@@ -304,6 +304,21 @@
     if (!city.trim()) { DMart.utils.toast('Please enter your city', 'error'); return; }
     if (!state.trim()) { DMart.utils.toast('Please enter your state', 'error'); return; }
     if (!pincode.trim() || pincode.replace(/\D/g, '').length < 6) { DMart.utils.toast('Please enter a valid 6-digit pincode', 'error'); return; }
+
+    /* Validate location constraints: only Mancherial District */
+    var lowerCity = city.toLowerCase();
+    var cleanPin = pincode.trim().replace(/\D/g, '');
+    var pins = ['504208', '504209', '504251', '504302', '504201', '504202', '504203', '504204', '504205', '504206', '504207', '504301'];
+    var isMancherial = false;
+    
+    if (lowerCity.indexOf('mancherial') !== -1 || cleanPin.indexOf('5042') === 0 || cleanPin.indexOf('5043') === 0 || pins.indexOf(cleanPin) !== -1) {
+      isMancherial = true;
+    }
+    
+    if (!isMancherial) {
+      DMart.utils.toast('Sorry, we only deliver to Mancherial (MNCL) District. Please enter a Mancherial address/pincode (e.g. 504208).', 'error');
+      return;
+    }
 
     /* Validate payment */
     if (!selectedPayment) { DMart.utils.toast('Please select a payment method', 'error'); return; }
