@@ -175,7 +175,7 @@
         return;
       }
       
-      var usersList = JSON.parse(localStorage.getItem('dmart_users') || '[]');
+      var usersList = JSON.parse(DMart.storage.getItem('dmart_users') || '[]');
       var found = usersList.find(function(u) { return u.email === email && u.password === password; });
       
       var user;
@@ -254,13 +254,13 @@
         avatar: makeInitials(name)
       };
       
-      var usersList = JSON.parse(localStorage.getItem('dmart_users') || '[]');
+      var usersList = JSON.parse(DMart.storage.getItem('dmart_users') || '[]');
       if (usersList.some(function(u) { return u.email === email; })) {
         showAuthError('An account with this email already exists.');
         return;
       }
       usersList.push(user);
-      localStorage.setItem('dmart_users', JSON.stringify(usersList));
+      DMart.storage.setItem('dmart_users', JSON.stringify(usersList));
 
       DMart.state.user = user;
       DMart.saveState();

@@ -1,22 +1,41 @@
 // Initialize global namespace
 window.DMart = window.DMart || {};
 
+// Safe localStorage wrapper to prevent crashes in blocked/private browsing environments
+DMart.storage = {
+  getItem: function(key) {
+    try {
+      return localStorage.getItem(key);
+    } catch (e) {
+      console.warn("localStorage.getItem blocked:", e);
+      return null;
+    }
+  },
+  setItem: function(key, val) {
+    try {
+      localStorage.setItem(key, val);
+    } catch (e) {
+      console.warn("localStorage.setItem blocked:", e);
+    }
+  }
+};
+
 // State management
 DMart.state = {
-  user: JSON.parse(localStorage.getItem('dmart_user') || 'null'),
-  cart: JSON.parse(localStorage.getItem('dmart_cart') || '[]'),
-  wishlist: JSON.parse(localStorage.getItem('dmart_wishlist') || '[]'),
-  orders: JSON.parse(localStorage.getItem('dmart_orders') || '[]'),
+  user: JSON.parse(DMart.storage.getItem('dmart_user') || 'null'),
+  cart: JSON.parse(DMart.storage.getItem('dmart_cart') || '[]'),
+  wishlist: JSON.parse(DMart.storage.getItem('dmart_wishlist') || '[]'),
+  orders: JSON.parse(DMart.storage.getItem('dmart_orders') || '[]'),
   currentPage: 'store',
   currentDept: null
 };
 
 // Save state to localStorage
 DMart.saveState = function() {
-  localStorage.setItem('dmart_user', JSON.stringify(DMart.state.user));
-  localStorage.setItem('dmart_cart', JSON.stringify(DMart.state.cart));
-  localStorage.setItem('dmart_wishlist', JSON.stringify(DMart.state.wishlist));
-  localStorage.setItem('dmart_orders', JSON.stringify(DMart.state.orders));
+  DMart.storage.setItem('dmart_user', JSON.stringify(DMart.state.user));
+  DMart.storage.setItem('dmart_cart', JSON.stringify(DMart.state.cart));
+  DMart.storage.setItem('dmart_wishlist', JSON.stringify(DMart.state.wishlist));
+  DMart.storage.setItem('dmart_orders', JSON.stringify(DMart.state.orders));
 };
 
 // Utility functions under DMart.utils
