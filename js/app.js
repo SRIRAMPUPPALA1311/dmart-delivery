@@ -249,7 +249,15 @@
     return h;
   };
 
-  OrdersPage.init = function () { /* no special listeners needed */ };
+  OrdersPage.init = function (params) {
+    if (params && params.track) {
+      setTimeout(function() {
+        DMart.toggleOrderTracking(params.track);
+        var el = document.getElementById('track-btn-' + params.track);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
+  };
 
   function capitalise(s) {
     return s ? s.charAt(0).toUpperCase() + s.slice(1) : '';

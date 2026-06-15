@@ -10,6 +10,7 @@
 
   // ---- Seeded random helper ----
   var _seed = 42;
+  var currentDashboardDept = 'sales';
   function sRand() {
     if (typeof DMart.utils !== 'undefined' && DMart.utils.seededRandom) {
       return DMart.utils.seededRandom(_seed++);
@@ -1151,7 +1152,7 @@
       for (var i = 0; i < section.items.length; i++) {
         var item = section.items[i];
         var active = (item.id === activeDept) ? ' active' : '';
-        html += '<a class="sidebar-link' + active + '" onclick="DMart.navigate(\'dashboard\',{dept:\'' + item.id + '\'})" style="display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;color:var(--text-secondary);text-decoration:none;font-size:13px;transition:all 0.2s;border-left:3px solid transparent;' + (active ? 'color:var(--primary);background:rgba(22, 163, 74, 0.08);border-left-color:var(--primary);font-weight:600;' : '') + '">';
+        html += '<a class="sidebar-link' + active + '" onclick="DMart.navigate(\'dashboard\',{dept:\'' + item.id + '\'})" style="display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;color:var(--text-secondary);text-decoration:none;font-size:13px;transition:all 0.2s;border-left:3px solid transparent;' + (active ? 'color:var(--primary);background:rgba(40, 116, 240, 0.08);border-left-color:var(--primary);font-weight:600;' : '') + '">';
         html += '<span style="font-size:16px;">' + item.icon + '</span> ' + item.name;
         html += '</a>';
       }
@@ -1370,6 +1371,7 @@
       dept = 'sales';
       config = dashboardConfigs[dept];
     }
+    currentDashboardDept = dept;
 
     var html = '';
 
@@ -1723,7 +1725,7 @@
         }
 
         DMart.utils.toast(p.name + ' price updated to ' + fmtCur(p.price) + '!', 'success');
-        DMart.navigate(DMart.state.currentPage || 'dashboard');
+        DMart.navigate('dashboard', { dept: currentDashboardDept });
       }
     },
     toggleItemStock: function(productId) {
@@ -1742,7 +1744,7 @@
       }
 
       DMart.utils.toast(p.name + ' is now ' + (p.inStock ? 'In Stock' : 'Out of Stock') + '!', 'success');
-      DMart.navigate(DMart.state.currentPage || 'dashboard');
+      DMart.navigate('dashboard', { dept: currentDashboardDept });
     },
     filterSalesItems: function() {
       var query = document.getElementById('sales-search-field').value.toLowerCase().trim();

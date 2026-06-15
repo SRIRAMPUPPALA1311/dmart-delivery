@@ -444,7 +444,7 @@ body {
 
 .sidebar-link.active {
     color: var(--primary);
-    background: rgba(233, 69, 96, 0.08);
+    background: rgba(40, 116, 240, 0.08);
     border-left-color: var(--primary);
     font-weight: 600;
 }
@@ -1120,7 +1120,7 @@ body {
 
 .ticket-item:hover, .ticket-item.active {
     border-color: var(--primary);
-    background: rgba(24, 20, 243, 0.02);
+    background: rgba(40, 116, 240, 0.02);
 }
 
 .ticket-header {
@@ -1411,7 +1411,7 @@ body {
 
 .auth-tab.active {
     color: var(--primary);
-    background: rgba(24, 20, 243, 0.05);
+    background: rgba(40, 116, 240, 0.05);
 }
 
 /* Branded Role Switcher widget */

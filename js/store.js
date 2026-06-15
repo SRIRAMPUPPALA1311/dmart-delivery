@@ -295,13 +295,13 @@
     h += '<div class="product-card-action" style="display:flex;align-items:center;justify-content:flex-end;width:95px;">';
     if (product.inStock) {
       if (qty > 0) {
-        h += '<div class="stepper-control" onclick="event.stopPropagation();" style="display:flex;align-items:center;background:var(--primary);color:white;border-radius:8px;overflow:hidden;height:32px;width:90px;justify-content:space-between;box-shadow:0 2px 4px rgba(24,20,243,0.15);">';
+        h += '<div class="stepper-control" onclick="event.stopPropagation();" style="display:flex;align-items:center;background:var(--primary);color:white;border-radius:8px;overflow:hidden;height:32px;width:90px;justify-content:space-between;box-shadow:0 2px 4px rgba(40,116,240,0.15);">';
         h += '<button class="stepper-btn minus" onclick="DMart.Store.updateQtyClick(event, \'' + product.id + '\', ' + (qty - 1) + ')" style="border:none;background:transparent;color:white;width:28px;height:32px;font-weight:800;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">−</button>';
         h += '<span class="stepper-value" style="font-weight:800;font-size:13px;color:white;">' + qty + '</span>';
         h += '<button class="stepper-btn plus" onclick="DMart.Store.updateQtyClick(event, \'' + product.id + '\', ' + (qty + 1) + ')" style="border:none;background:transparent;color:white;width:28px;height:32px;font-weight:800;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">+</button>';
         h += '</div>';
       } else {
-        h += '<button class="add-btn-outline" onclick="event.stopPropagation();DMart.Store.addClick(event, \'' + product.id + '\')" style="background:transparent;color:var(--primary);border:1.5px solid rgba(24, 20, 243, 0.4);padding:4px 12px;border-radius:8px;font-weight:800;font-size:12px;cursor:pointer;transition:var(--transition);height:32px;width:75px;display:flex;align-items:center;justify-content:center;">ADD</button>';
+        h += '<button class="add-btn-outline" onclick="event.stopPropagation();DMart.Store.addClick(event, \'' + product.id + '\')" style="background:transparent;color:var(--primary);border:1.5px solid rgba(40, 116, 240, 0.4);padding:4px 12px;border-radius:8px;font-weight:800;font-size:12px;cursor:pointer;transition:var(--transition);height:32px;width:75px;display:flex;align-items:center;justify-content:center;">ADD</button>';
       }
     } else {
       h += '<button class="add-btn-outline disabled" disabled style="opacity:0.5;cursor:not-allowed;background:#f1f5f9;color:var(--text-muted);border:1px solid var(--border);height:32px;font-size:11px;font-weight:700;width:80px;text-align:center;border-radius:8px;">Sold Out</button>';

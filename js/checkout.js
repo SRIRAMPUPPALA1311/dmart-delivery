@@ -407,7 +407,7 @@
     h += '</div>';
     h += '<div class="order-success-actions">';
     h += '<button class="btn btn-primary btn-lg" onclick="DMart.navigate(\'store\')">Continue Shopping</button>';
-    h += '<button class="btn btn-secondary btn-lg" onclick="DMart.utils.toast(\'Order tracking coming soon!\',\'info\')">Track Order</button>';
+    h += '<button class="btn btn-secondary btn-lg" onclick="DMart.navigate(\'orders\', { track: \'' + order.id + '\' })">Track Order</button>';
     h += '</div>';
     h += '</div>';
 

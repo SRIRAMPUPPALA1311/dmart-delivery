@@ -1,6 +1,15 @@
 // Initialize global namespace
 window.DMart = window.DMart || {};
 
+// Global utility functions
+window.escHtml = function(str) {
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+};
+
+window.capitalise = function(s) {
+  return s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
+};
+
 // Safe localStorage wrapper to prevent crashes in blocked/private browsing environments
 DMart.storage = {
   getItem: function(key) {
