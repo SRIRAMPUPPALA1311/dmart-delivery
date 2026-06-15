@@ -1264,6 +1264,92 @@
     return html;
   }
 
+  function renderAddProductFormHTML() {
+    var h = '';
+    h += '<div class="glass-card" id="add-product-form-container" style="display:none;margin-bottom:24px;border:1.5px dashed var(--primary);border-radius:12px;padding:20px;background:#f8fafc;animation:fadeInUp 0.3s ease;">';
+    h += '<h3 style="font-size:15px;font-weight:800;color:var(--text-primary);margin-bottom:16px;display:flex;align-items:center;gap:6px;">➕ Add New Item to DMart Catalog</h3>';
+    h += '<form id="dmart-add-product-form" onsubmit="event.preventDefault(); DMart.Dashboard.submitNewProduct();">';
+    h += '<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:16px;margin-bottom:16px;">';
+    h += '<div class="input-group" style="margin-bottom:0;">';
+    h += '<label style="display:block;margin-bottom:6px;font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;">Item Name</label>';
+    h += '<input type="text" id="add-p-name" placeholder="e.g. Alphonso Mangoes" required style="width:100%;height:38px;padding:0 10px;border-radius:6px;border:1px solid var(--border);font-size:13px;outline:none;background:white;color:var(--text-primary);">';
+    h += '</div>';
+    h += '<div class="input-group" style="margin-bottom:0;">';
+    h += '<label style="display:block;margin-bottom:6px;font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;">Brand</label>';
+    h += '<input type="text" id="add-p-brand" placeholder="e.g. DMart Fresh" required style="width:100%;height:38px;padding:0 10px;border-radius:6px;border:1px solid var(--border);font-size:13px;outline:none;background:white;color:var(--text-primary);">';
+    h += '</div>';
+    h += '<div class="input-group" style="margin-bottom:0;">';
+    h += '<label style="display:block;margin-bottom:6px;font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;">Department</label>';
+    h += '<select id="add-p-dept" style="width:100%;height:38px;padding:0 10px;border-radius:6px;border:1px solid var(--border);font-size:13px;background:white;font-weight:600;outline:none;color:var(--text-primary);">';
+    h += '<option value="grocery">Grocery & Staples</option>';
+    h += '<option value="fruits">Fruits & Vegetables</option>';
+    h += '<option value="dairy">Dairy & Eggs</option>';
+    h += '<option value="beverages">Beverages</option>';
+    h += '<option value="snacks">Snacks & Branded Foods</option>';
+    h += '<option value="personal">Personal Care</option>';
+    h += '<option value="home">Home & Kitchen</option>';
+    h += '<option value="baby">Baby Care</option>';
+    h += '<option value="frozen">Frozen Foods</option>';
+    h += '<option value="meat">Meat & Seafood</option>';
+    h += '<option value="bakery">Bakery</option>';
+    h += '<option value="health">Health & Wellness</option>';
+    h += '<option value="pets">Pet Supplies</option>';
+    h += '<option value="electronics">Electronics & Appliances</option>';
+    h += '</select>';
+    h += '</div>';
+    h += '</div>';
+    h += '<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(120px, 1fr));gap:16px;margin-bottom:16px;">';
+    h += '<div class="input-group" style="margin-bottom:0;">';
+    h += '<label style="display:block;margin-bottom:6px;font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;">Price (₹)</label>';
+    h += '<input type="number" id="add-p-price" placeholder="150" required min="1" style="width:100%;height:38px;padding:0 10px;border-radius:6px;border:1px solid var(--border);font-size:13px;outline:none;background:white;color:var(--text-primary);">';
+    h += '</div>';
+    h += '<div class="input-group" style="margin-bottom:0;">';
+    h += '<label style="display:block;margin-bottom:6px;font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;">Discount (%)</label>';
+    h += '<input type="number" id="add-p-discount" placeholder="10" min="0" max="90" value="0" style="width:100%;height:38px;padding:0 10px;border-radius:6px;border:1px solid var(--border);font-size:13px;outline:none;background:white;color:var(--text-primary);">';
+    h += '</div>';
+    h += '<div class="input-group" style="margin-bottom:0;">';
+    h += '<label style="display:block;margin-bottom:6px;font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;">Size / Pack</label>';
+    h += '<input type="text" id="add-p-unit" placeholder="e.g. 1 kg, Pack of 4" required style="width:100%;height:38px;padding:0 10px;border-radius:6px;border:1px solid var(--border);font-size:13px;outline:none;background:white;color:var(--text-primary);">';
+    h += '</div>';
+    h += '<div class="input-group" style="margin-bottom:0;">';
+    h += '<label style="display:block;margin-bottom:6px;font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;">Emoji (Photo)</label>';
+    h += '<input type="text" id="add-p-emoji" placeholder="🥭" value="📦" style="width:100%;height:38px;padding:0 10px;border-radius:6px;border:1px solid var(--border);font-size:13px;outline:none;background:white;color:var(--text-primary);">';
+    h += '</div>';
+    h += '</div>';
+    h += '<div style="margin-bottom:16px;">';
+    h += '<label style="display:block;margin-bottom:6px;font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;">Photo Image URL (Optional)</label>';
+    h += '<input type="url" id="add-p-image" placeholder="https://images.unsplash.com/photo-..." style="width:100%;height:38px;padding:0 10px;border-radius:6px;border:1px solid var(--border);font-size:13px;outline:none;background:white;color:var(--text-primary);">';
+    h += '</div>';
+    h += '<div style="display:flex;justify-content:flex-end;gap:10px;">';
+    h += '<button type="button" class="btn btn-secondary" onclick="DMart.Dashboard.toggleAddProductForm();" style="padding:8px 16px;font-size:13px;height:36px;border-radius:6px;cursor:pointer;">Cancel</button>';
+    h += '<button type="submit" class="btn btn-primary" style="padding:8px 24px;font-size:13px;height:36px;border-radius:6px;background:var(--primary);color:white;font-weight:700;border:none;cursor:pointer;">Save Item</button>';
+    h += '</div>';
+    h += '</form>';
+    h += '</div>';
+    return h;
+  }
+
+  function renderInventoryItemRow(p) {
+    var h = '';
+    h += '<tr style="font-size:13px; color:var(--text-primary);" class="inventory-item-row" data-name="' + p.name.toLowerCase() + '" data-brand="' + p.brand.toLowerCase() + '">';
+    h += '<td style="padding:10px 14px; border-bottom:1px solid var(--border); font-weight:700;">' + p.emoji + ' ' + escHtml(p.name) + '</td>';
+    h += '<td style="padding:10px 14px; border-bottom:1px solid var(--border); color:var(--text-secondary);">' + escHtml(p.brand) + '</td>';
+    h += '<td style="padding:10px 14px; border-bottom:1px solid var(--border); text-transform:capitalize;">' + escHtml(p.departmentId || 'grocery') + '</td>';
+    h += '<td style="padding:10px 14px; border-bottom:1px solid var(--border); font-weight:800;">' + fmtCur(p.price) + '</td>';
+    h += '<td style="padding:10px 14px; border-bottom:1px solid var(--border); color:var(--secondary); font-weight:800;">' + p.discount + '%</td>';
+    h += '<td style="padding:10px 14px; border-bottom:1px solid var(--border);">';
+    h += '<span style="background:' + (p.inStock ? 'rgba(56, 142, 60, 0.1); color:#2e7d32;' : 'rgba(255, 75, 74, 0.1); color:#FF4B4A;') + ' padding:4px 8px; border-radius:4px; font-size:10px; font-weight:700;">' + (p.inStock ? 'In Stock' : 'Out of Stock') + '</span>';
+    h += '</td>';
+    h += '<td style="padding:10px 14px; border-bottom:1px solid var(--border);">';
+    h += '<div style="display:flex; gap:6px;">';
+    h += '<button class="btn btn-secondary btn-sm" onclick="DMart.Dashboard.editItemPrice(\'' + p.id + '\')" style="padding:4px 8px; font-size:11px; font-weight:700; border-radius:6px; cursor:pointer;">Price</button>';
+    h += '<button class="btn btn-secondary btn-sm" onclick="DMart.Dashboard.toggleItemStock(\'' + p.id + '\')" style="padding:4px 8px; font-size:11px; font-weight:700; border-radius:6px; cursor:pointer;">Stock</button>';
+    h += '</div>';
+    h += '</td>';
+    h += '</tr>';
+    return h;
+  }
+
   // ============================================================
   // Main Render
   // ============================================================
@@ -1301,7 +1387,6 @@
     // Header
     html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:16px;">';
     html += '<div>';
-    h += ''; // placeholder to avoid syntax errors
     html += '<h1 style="font-size:26px;font-weight:700;color:var(--text-primary);margin:0 0 6px 0;display:flex;align-items:center;gap:10px;">';
     html += '<span style="font-size:28px;">' + config.icon + '</span> ' + config.title;
     html += '</h1>';
@@ -1318,6 +1403,49 @@
     // If support tab is selected, render Ticket Resolver instead of standard table/charts
     if (dept === 'support' && DMart.Tickets) {
       html += DMart.Tickets.render();
+    } else if (dept === 'inventory') {
+      html += renderKPIs(config.kpis);
+      
+      // Add Product controls
+      html += '<div style="margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">';
+      html += '<button class="btn btn-primary" onclick="DMart.Dashboard.toggleAddProductForm()" style="background:var(--primary); color:white; font-weight:700; padding:10px 20px; border-radius:8px; border:none; display:flex; align-items:center; gap:6px; cursor:pointer;">➕ Add New Item</button>';
+      html += '<input type="text" id="inventory-search" onkeyup="DMart.Dashboard.filterInventoryItems()" placeholder="Search catalog..." style="padding:8px 12px; border-radius:8px; border:1px solid var(--border); font-size:13px; width:220px; outline:none; background:white; color:var(--text-primary);">';
+      html += '</div>';
+
+      // Insert Add Product Form HTML
+      html += renderAddProductFormHTML();
+
+      // Product Table
+      html += '<div style="background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:20px; box-shadow:var(--shadow); margin-bottom:24px;">';
+      html += '<h3 style="font-family:var(--font-display); font-size:15px; font-weight:800; color:var(--text-primary); margin:0 0 16px 0;">Catalog Item List</h3>';
+      
+      html += '<div style="overflow-x:auto; max-height:450px; overflow-y:auto; border:1px solid var(--border); border-radius:8px;">';
+      html += '<table class="data-table" style="width:100%; border-collapse:collapse; text-align:left;">';
+      html += '<thead style="background:#f8fafc; position:sticky; top:0; z-index:1;">';
+      html += '<tr style="font-size:11px; color:var(--text-secondary); text-transform:uppercase;">';
+      html += '<th style="padding:10px 14px; border-bottom:1px solid var(--border)">Item</th>';
+      html += '<th style="padding:10px 14px; border-bottom:1px solid var(--border)">Brand</th>';
+      html += '<th style="padding:10px 14px; border-bottom:1px solid var(--border)">Category</th>';
+      html += '<th style="padding:10px 14px; border-bottom:1px solid var(--border)">Price</th>';
+      html += '<th style="padding:10px 14px; border-bottom:1px solid var(--border)">Discount</th>';
+      html += '<th style="padding:10px 14px; border-bottom:1px solid var(--border)">Stock</th>';
+      html += '<th style="padding:10px 14px; border-bottom:1px solid var(--border)">Actions</th>';
+      html += '</tr>';
+      html += '</thead>';
+      html += '<tbody id="inventory-table-body">';
+      
+      var catalogList = DMart.products.slice(0, 50); // Show first 50 items for performance
+      catalogList.forEach(function(p) {
+        html += renderInventoryItemRow(p);
+      });
+
+      html += '</tbody>';
+      html += '</table>';
+      html += '</div>'; // table scroll wrapper
+      html += '</div>'; // card
+      
+      // Render standard inventory charts
+      html += renderCharts(config.charts, dept);
     } else {
       // KPI Cards
       html += renderKPIs(config.kpis);
@@ -1582,21 +1710,115 @@
         if (p.originalPrice) {
           p.originalPrice = Math.round(p.price * (100 / (100 - p.discount)));
         }
-        // Save back to localstorage if we want changes to persist
+        
+        // Save override to localStorage
+        try {
+          var overrides = JSON.parse(localStorage.getItem('dmart_product_overrides') || '{}');
+          overrides[p.id] = overrides[p.id] || {};
+          overrides[p.id].price = p.price;
+          overrides[p.id].originalPrice = p.originalPrice;
+          localStorage.setItem('dmart_product_overrides', JSON.stringify(overrides));
+        } catch(e) {
+          console.error(e);
+        }
+
         DMart.utils.toast(p.name + ' price updated to ' + fmtCur(p.price) + '!', 'success');
-        DMart.navigate('dashboard');
+        DMart.navigate(DMart.state.currentPage || 'dashboard');
       }
     },
     toggleItemStock: function(productId) {
       var p = DMart.getProductById(productId);
       if (!p) return;
       p.inStock = !p.inStock;
+
+      // Save override to localStorage
+      try {
+        var overrides = JSON.parse(localStorage.getItem('dmart_product_overrides') || '{}');
+        overrides[p.id] = overrides[p.id] || {};
+        overrides[p.id].inStock = p.inStock;
+        localStorage.setItem('dmart_product_overrides', JSON.stringify(overrides));
+      } catch(e) {
+        console.error(e);
+      }
+
       DMart.utils.toast(p.name + ' is now ' + (p.inStock ? 'In Stock' : 'Out of Stock') + '!', 'success');
-      DMart.navigate('dashboard');
+      DMart.navigate(DMart.state.currentPage || 'dashboard');
     },
     filterSalesItems: function() {
       var query = document.getElementById('sales-search-field').value.toLowerCase().trim();
       var rows = document.querySelectorAll('.sales-item-row');
+      rows.forEach(function(row) {
+        var name = row.getAttribute('data-name');
+        var brand = row.getAttribute('data-brand');
+        if (name.indexOf(query) !== -1 || brand.indexOf(query) !== -1) {
+          row.style.display = 'table-row';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    },
+    toggleAddProductForm: function() {
+      var form = document.getElementById('add-product-form-container');
+      if (form) {
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+      }
+    },
+    submitNewProduct: function() {
+      var name = document.getElementById('add-p-name').value.trim();
+      var brand = document.getElementById('add-p-brand').value.trim();
+      var deptId = document.getElementById('add-p-dept').value;
+      var price = document.getElementById('add-p-price').value;
+      var discount = document.getElementById('add-p-discount').value || 0;
+      var unit = document.getElementById('add-p-unit').value.trim();
+      var emoji = document.getElementById('add-p-emoji').value.trim() || '📦';
+      var imageUrl = document.getElementById('add-p-image').value.trim();
+
+      if (!name || !brand || !price || !unit) {
+        DMart.utils.toast('Please fill out all required fields.', 'error');
+        return;
+      }
+
+      var depts = {
+        grocery: 'Grocery & Staples',
+        fruits: 'Fruits & Vegetables',
+        dairy: 'Dairy & Eggs',
+        beverages: 'Beverages',
+        snacks: 'Snacks & Branded Foods',
+        personal: 'Personal Care',
+        home: 'Home & Kitchen',
+        baby: 'Baby Care',
+        frozen: 'Frozen Foods',
+        meat: 'Meat & Seafood',
+        bakery: 'Bakery',
+        health: 'Health & Wellness',
+        pets: 'Pet Supplies',
+        electronics: 'Electronics & Appliances'
+      };
+
+      var pData = {
+        name: brand + ' ' + name,
+        brand: brand,
+        department: depts[deptId] || 'Grocery & Staples',
+        departmentId: deptId,
+        price: Number(price),
+        discount: Number(discount),
+        originalPrice: Math.round(Number(price) * (100 / (100 - Number(discount)))),
+        unit: unit,
+        emoji: emoji,
+        imageUrl: imageUrl,
+        inStock: true
+      };
+
+      if (DMart.addProduct) {
+        DMart.addProduct(pData);
+        DMart.navigate('dashboard', { dept: 'inventory' });
+      } else {
+        DMart.utils.toast('Error: addProduct API not loaded.', 'error');
+      }
+    },
+    filterInventoryItems: function() {
+      var query = document.getElementById('inventory-search').value.toLowerCase().trim();
+      var rows = document.querySelectorAll('.inventory-item-row');
       rows.forEach(function(row) {
         var name = row.getAttribute('data-name');
         var brand = row.getAttribute('data-brand');

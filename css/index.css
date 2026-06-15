@@ -3,41 +3,41 @@
    ============================================ */
 
 :root {
-    --primary: #1814F3;
-    --primary-light: #2D60FF;
-    --primary-dark: #0a07b3;
-    --secondary: #FFBB38;
-    --secondary-light: #ffe2b3;
-    --accent: #1814F3;
-    --bg-dark: #F5F7FA;
+    --primary: #2874F0; /* Flipkart Blue */
+    --primary-light: #5894f7;
+    --primary-dark: #1b5bc2;
+    --secondary: #ff9f00; /* Flipkart Amber */
+    --secondary-light: #ffb83d;
+    --accent: #2874F0;
+    --bg-dark: #F1F3F6; /* Clean light gray background */
     --bg-surface: #ffffff;
     --bg-card: #ffffff;
-    --bg-card-hover: #f8fafc;
+    --bg-card-hover: #f8f9fa;
     --bg-input: #ffffff;
-    --text-primary: #343C6A;
-    --text-secondary: #718EBF;
-    --text-muted: #888ea8;
-    --success: #41D430;
-    --success-bg: rgba(65, 212, 48, 0.1);
-    --warning: #FFBB38;
-    --warning-bg: rgba(255, 187, 56, 0.1);
-    --error: #FF4B4A;
-    --error-bg: rgba(255, 75, 74, 0.1);
-    --info: #2D60FF;
-    --info-bg: rgba(45, 96, 255, 0.1);
-    --border: #E6EFF5;
-    --border-light: #f1f5f9;
-    --shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.05);
+    --text-primary: #212121; /* High contrast text */
+    --text-secondary: #666666;
+    --text-muted: #878787;
+    --success: #388e3c; /* Flipkart green */
+    --success-bg: rgba(56, 142, 60, 0.1);
+    --warning: #ff9f00;
+    --warning-bg: rgba(255, 159, 0, 0.1);
+    --error: #ff6161;
+    --error-bg: rgba(255, 97, 97, 0.1);
+    --info: #2874F0;
+    --info-bg: rgba(40, 116, 240, 0.1);
+    --border: #e0e0e0;
+    --border-light: #f0f0f0;
+    --shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
     --glass: rgba(0, 0, 0, 0.02);
     --glass-border: rgba(0, 0, 0, 0.08);
-    --radius-sm: 6px;
-    --radius-md: 10px;
-    --radius-lg: 16px;
-    --radius-xl: 20px;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
     --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-display: 'Bricolage Grotesque', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition: all 0.2s ease-in-out;
 }
 
 /* --- Global Reset & Base --- */
@@ -302,11 +302,10 @@ body {
     position: sticky;
     top: 0;
     z-index: 1000;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
+    background: var(--primary); /* Flipkart Blue */
+    border-bottom: 1px solid var(--primary-dark);
     padding: 0 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .navbar-inner {
@@ -315,7 +314,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 68px;
+    height: 60px;
 }
 
 .navbar-logo {
@@ -324,13 +323,13 @@ body {
     gap: 12px;
     font-size: 22px;
     font-weight: 800;
-    color: var(--text-primary);
+    color: #ffffff;
     text-decoration: none;
     cursor: pointer;
 }
 
 .navbar-logo span {
-    color: var(--primary);
+    color: var(--secondary);
 }
 
 .nav-links {
@@ -340,10 +339,10 @@ body {
 }
 
 .nav-link {
-    padding: 10px 18px;
-    border-radius: var(--radius-md);
-    color: var(--text-secondary);
-    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 600;
     cursor: pointer;
     transition: var(--transition);
     text-decoration: none;
@@ -353,19 +352,18 @@ body {
 
 .nav-link:hover,
 .nav-link.active {
-    color: var(--primary);
-    background: var(--glass);
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
 }
 
 .nav-link.active::after {
     content: '';
     position: absolute;
-    bottom: -1px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 24px;
+    bottom: -6px;
+    left: 15%;
+    width: 70%;
     height: 3px;
-    background: var(--primary);
+    background: var(--secondary); /* Flipkart Gold bottom bar! */
     border-radius: 2px;
 }
 

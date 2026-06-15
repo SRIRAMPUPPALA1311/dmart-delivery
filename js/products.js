@@ -946,6 +946,77 @@
     });
   };
 
+  // Load custom products from localStorage
+  try {
+    var customs = JSON.parse(localStorage.getItem('dmart_custom_products') || '[]');
+    customs.forEach(function(p) {
+      allProducts.unshift(p);
+      DMart._productMap.set(p.id, p);
+      var deptArr = DMart._deptIndex.get(p.departmentId);
+      if (deptArr) {
+        deptArr.unshift(p); // Prepend so it shows up first in department view
+      }
+    });
+  } catch (e) {
+    console.error('[DMart] Error loading custom products:', e);
+  }
+
+  // Load overrides from localStorage (price/stock edits)
+  try {
+    var overrides = JSON.parse(localStorage.getItem('dmart_product_overrides') || '{}');
+    allProducts.forEach(function(p) {
+      if (overrides[p.id]) {
+        var ov = overrides[p.id];
+        if (ov.price !== undefined) p.price = ov.price;
+        if (ov.originalPrice !== undefined) p.originalPrice = ov.originalPrice;
+        if (ov.inStock !== undefined) p.inStock = ov.inStock;
+      }
+    });
+  } catch (e) {
+    console.error('[DMart] Error loading overrides:', e);
+  }
+
+  // API to add new product
+  DMart.addProduct = function(pData) {
+    var id = 'custom_' + pData.departmentId + '_' + Date.now();
+    var newP = {
+      id: id,
+      name: pData.name,
+      brand: pData.brand,
+      department: pData.department,
+      departmentId: pData.departmentId,
+      price: Math.round(Number(pData.price)),
+      originalPrice: Math.round(Number(pData.originalPrice || pData.price)),
+      discount: Math.round(Number(pData.discount || 0)),
+      rating: 4.8,
+      ratingCount: 1,
+      unit: pData.unit || '1 Unit',
+      inStock: pData.inStock !== undefined ? pData.inStock : true,
+      emoji: pData.emoji || '📦',
+      imageUrl: pData.imageUrl || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80',
+      tags: pData.tags || []
+    };
+
+    allProducts.unshift(newP);
+    DMart._productMap.set(newP.id, newP);
+    var deptArr = DMart._deptIndex.get(newP.departmentId);
+    if (deptArr) {
+      deptArr.unshift(newP);
+    }
+
+    // Save to localStorage
+    try {
+      var customs = JSON.parse(localStorage.getItem('dmart_custom_products') || '[]');
+      customs.push(newP);
+      localStorage.setItem('dmart_custom_products', JSON.stringify(customs));
+    } catch(err) {
+      console.error('[DMart] Error saving custom product:', err);
+    }
+
+    DMart.utils.toast('Product "' + newP.name + '" added successfully!', 'success');
+    return newP;
+  };
+
   console.log('DMart products loaded: ' + DMart.products.length + ' products');
 
 })();

@@ -45,27 +45,25 @@
       perPage: perPage
     });
 
-    var html = '';
-
-    /* Hero / Search */
-    html += '<section class="store-hero" style="background:linear-gradient(to right, #16a34a, #00b34a);padding:48px 20px;position:relative;overflow:hidden;border-radius:0 0 24px 24px;">';
-    html += '<div class="absolute inset-0" style="position:absolute;top:0;left:0;right:0;bottom:0;opacity:0.1;background:radial-gradient(circle at 100% 100%, rgba(255,255,255,0.8) 0%, transparent 50%);pointer-events:none;"></div>';
+    var html = '';    /* Hero / Search */
+    html += '<section class="store-hero" style="background:linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);padding:40px 20px;position:relative;overflow:hidden;border-radius:0 0 16px 16px;">';
+    html += '<div class="absolute inset-0" style="position:absolute;top:0;left:0;right:0;bottom:0;opacity:0.15;background:radial-gradient(circle at 80% 20%, rgba(255,255,255,0.4) 0%, transparent 60%);pointer-events:none;"></div>';
     html += '<div class="container" style="max-width:1152px;margin:0 auto;position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:32px;">';
     
     html += '<div style="flex:1;max-width:700px;color:white;">';
-    html += '<div class="hero-tagline" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.2);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);padding:6px 16px;border-radius:100px;font-size:13px;font-weight:700;margin-bottom:16px;">';
-    html += '⚡ Delivery in 10 minutes';
+    html += '<div class="hero-tagline" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.2);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);padding:6px 16px;border-radius:100px;font-size:13px;font-weight:700;margin-bottom:14px;">';
+    html += '⚡ Fast 10-Minute Delivery in Mancherial';
     html += '</div>';
-    html += '<h1 style="font-family:var(--font-display);font-size:48px;font-weight:800;line-height:1.1;margin-bottom:16px;letter-spacing:-1px;">Groceries delivered <span style="color:#fef08a;">in minutes.</span></h1>';
+    html += '<h1 style="font-family:var(--font-display);font-size:40px;font-weight:800;line-height:1.2;margin-bottom:16px;letter-spacing:-0.5px;text-shadow:0 2px 4px rgba(0,0,0,0.1);">Premium Groceries <span style="color:var(--secondary);">Direct to Home.</span></h1>';
     
     html += '<div class="store-search" style="position:relative;max-width:550px;">';
     html += '<span style="position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:18px;pointer-events:none;">🔍</span>';
-    html += '<input type="text" class="store-search-input" id="store-search" placeholder="Search for fresh fruits, milk, snacks..." value="' + escHtml(currentSearch) + '" style="width:100%;height:54px;padding-left:48px;padding-right:16px;border-radius:16px;border:none;box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);font-size:16px;font-weight:500;outline:none;color:var(--text-primary);background:white;">';
-    html += '<div class="search-dropdown" id="search-dropdown" style="position:absolute;top:100%;left:0;right:0;background:white;border-radius:16px;box-shadow:var(--shadow-lg);border:1px solid var(--border);margin-top:8px;max-height:300px;overflow-y:auto;z-index:1000;display:none;"></div>';
+    html += '<input type="text" class="store-search-input" id="store-search" placeholder="Search for fresh fruits, milk, snacks..." value="' + escHtml(currentSearch) + '" style="width:100%;height:48px;padding-left:48px;padding-right:16px;border-radius:12px;border:none;box-shadow:0 8px 16px rgba(0,0,0,0.08);font-size:15px;font-weight:500;outline:none;color:var(--text-primary);background:white;">';
+    html += '<div class="search-dropdown" id="search-dropdown" style="position:absolute;top:100%;left:0;right:0;background:white;border-radius:12px;box-shadow:var(--shadow-lg);border:1px solid var(--border);margin-top:8px;max-height:300px;overflow-y:auto;z-index:1000;display:none;"></div>';
     html += '</div>';
     html += '</div>';
     
-    html += '<div class="hidden-md" style="width:220px;height:220px;border-radius:50%;border:8px solid rgba(255,255,255,0.2);overflow:hidden;box-shadow:var(--shadow-lg);flex-shrink:0;">';
+    html += '<div class="hidden-md" style="width:180px;height:180px;border-radius:50%;border:6px solid rgba(255,255,255,0.2);overflow:hidden;box-shadow:var(--shadow-lg);flex-shrink:0;">';
     html += '<img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80" alt="Fresh groceries" style="width:100%;height:100%;object-fit:cover;">';
     html += '</div>';
     
@@ -73,33 +71,76 @@
     html += '</section>';
 
     /* Categories circle cards slider */
-    html += '<div class="container" style="max-width:1152px;margin:24px auto 0;padding:0 16px;">';
-    html += '<section class="categories-section" style="background:white;border-radius:24px;border:1px solid var(--border);padding:24px;box-shadow:var(--shadow);">';
-    html += '<h2 style="font-family:var(--font-display);font-size:18px;font-weight:800;margin-bottom:16px;color:var(--text-primary);">Shop by Category</h2>';
+    html += '<div class="container" style="max-width:1152px;margin:20px auto 0;padding:0 16px;">';
+    html += '<section class="categories-section" style="background:white;border-radius:16px;border:1px solid var(--border);padding:20px;box-shadow:var(--shadow);">';
+    html += '<h2 style="font-family:var(--font-display);font-size:16px;font-weight:800;margin-bottom:12px;color:var(--text-primary);">Shop by Category</h2>';
     html += '<div class="categories-slider" style="display:flex;overflow-x:auto;gap:16px;padding-bottom:8px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;">';
     
     var isAllActive = currentDept === '';
-    html += '<button class="category-circle-card" onclick="DMart.Store.setDept(\'\')" style="background:none;border:none;outline:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;min-width:80px;opacity:' + (isAllActive ? '1' : '0.7') + ';transition:all 0.2s;">';
-    html += '<div class="circle-image-wrapper" style="width:68px;height:68px;border-radius:20px;display:flex;align-items:center;justify-content:center;background:' + (isAllActive ? '#16a34a' : '#f1f5f9') + ';box-shadow:' + (isAllActive ? '0 4px 6px -1px rgba(22,163,74,0.3)' : 'none') + ';transition:all 0.2s;">';
-    html += '<span style="font-size:24px;color:' + (isAllActive ? 'white' : 'var(--text-secondary)') + ';">🛍️</span>';
+    html += '<button class="category-circle-card" onclick="DMart.Store.setDept(\'\')" style="background:none;border:none;outline:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:80px;opacity:' + (isAllActive ? '1' : '0.7') + ';transition:all 0.2s;">';
+    html += '<div class="circle-image-wrapper" style="width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:' + (isAllActive ? 'var(--primary)' : '#f1f5f9') + ';box-shadow:' + (isAllActive ? '0 4px 10px rgba(40,116,240,0.3)' : 'none') + ';transition:all 0.2s;">';
+    html += '<span style="font-size:22px;color:' + (isAllActive ? 'white' : 'var(--text-secondary)') + ';">🛍️</span>';
     html += '</div>';
-    html += '<span style="font-size:12px;font-weight:700;color:' + (isAllActive ? '#16a34a' : 'var(--text-primary)') + ';text-align:center;">All</span>';
+    html += '<span style="font-size:12px;font-weight:700;color:' + (isAllActive ? 'var(--primary)' : 'var(--text-primary)') + ';text-align:center;">All</span>';
     html += '</button>';
 
     for (var d = 0; d < departments.length; d++) {
       var dep = departments[d];
       var isActive = currentDept === dep.id;
       var imgUrl = DEPT_IMAGES[dep.id] || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=200&q=80';
-      html += '<button class="category-circle-card" onclick="DMart.Store.setDept(\'' + dep.id + '\')" style="background:none;border:none;outline:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;min-width:80px;opacity:' + (isActive ? '1' : '0.7') + ';transition:all 0.2s;">';
-      html += '<div class="circle-image-wrapper" style="width:68px;height:68px;border-radius:20px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#f1f5f9;' + (isActive ? 'box-shadow: 0 0 0 3px #16a34a;' : 'border: 1px solid var(--border);') + ';transition:all 0.2s;">';
+      html += '<button class="category-circle-card" onclick="DMart.Store.setDept(\'' + dep.id + '\')" style="background:none;border:none;outline:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:80px;opacity:' + (isActive ? '1' : '0.7') + ';transition:all 0.2s;">';
+      html += '<div class="circle-image-wrapper" style="width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#f1f5f9;' + (isActive ? 'box-shadow: 0 0 0 3px var(--primary);' : 'border: 1px solid var(--border);') + ';transition:all 0.2s;">';
       html += '<img src="' + imgUrl + '" alt="' + dep.name + '" style="width:100%;height:100%;object-fit:cover;">';
       html += '</div>';
-      html += '<span style="font-size:12px;font-weight:700;color:' + (isActive ? '#16a34a' : 'var(--text-primary)') + ';text-align:center;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + dep.name.split(' ')[0] + '</span>';
+      html += '<span style="font-size:12px;font-weight:700;color:' + (isActive ? 'var(--primary)' : 'var(--text-primary)') + ';text-align:center;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + dep.name.split(' ')[0] + '</span>';
       html += '</button>';
     }
-    
     html += '</div>';
     html += '</section>';
+    html += '</div>';
+
+    /* Animated Promotional Banner Carousel */
+    html += '<div class="container" style="max-width:1152px;margin:20px auto 0;padding:0 16px;">';
+    html += '<div class="store-carousel" id="promo-carousel" style="width:100%;height:180px;border-radius:12px;overflow:hidden;position:relative;box-shadow:var(--shadow);">';
+    
+    // Slide 1
+    html += '<div class="carousel-slide active" style="width:100%;height:100%;position:absolute;top:0;left:0;display:flex;align-items:center;background:linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);color:white;padding:24px 48px;transition:opacity 0.5s ease-in-out;opacity:1;z-index:10;">';
+    html += '<div style="flex:1;">';
+    html += '<span style="background:var(--secondary);color:#212121;font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;">BIG BILLION DAYS</span>';
+    html += '<h2 style="font-family:var(--font-display);font-size:26px;font-weight:800;margin-top:10px;margin-bottom:8px;color:#ffffff;line-height:1.2;">Flat 50% Off on Staples!</h2>';
+    html += '<p style="font-size:14px;color:rgba(255,255,255,0.9);margin-bottom:0;">Stock up your monthly pantry items with zero delivery fee.</p>';
+    html += '</div>';
+    html += '<div style="font-size:80px;opacity:0.25;user-select:none;">🍚</div>';
+    html += '</div>';
+    
+    // Slide 2
+    html += '<div class="carousel-slide" style="width:100%;height:100%;position:absolute;top:0;left:0;display:flex;align-items:center;background:linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);color:white;padding:24px 48px;transition:opacity 0.5s ease-in-out;opacity:0;z-index:1;">';
+    html += '<div style="flex:1;">';
+    html += '<span style="background:#ffffff;color:#b91c1c;font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;">MANCHERIAL FRESH</span>';
+    html += '<h2 style="font-family:var(--font-display);font-size:26px;font-weight:800;margin-top:10px;margin-bottom:8px;color:#ffffff;line-height:1.2;">Fresh Mangoes & Fruits 🥦</h2>';
+    html += '<p style="font-size:14px;color:rgba(255,255,255,0.9);margin-bottom:0;">Freshly harvested from organic farms around Mancherial, TS.</p>';
+    html += '</div>';
+    html += '<div style="font-size:80px;opacity:0.25;user-select:none;">🥭</div>';
+    html += '</div>';
+
+    // Slide 3
+    html += '<div class="carousel-slide" style="width:100%;height:100%;position:absolute;top:0;left:0;display:flex;align-items:center;background:linear-gradient(135deg, #d97706 0%, #b45309 100%);color:white;padding:24px 48px;transition:opacity 0.5s ease-in-out;opacity:0;z-index:1;">';
+    html += '<div style="flex:1;">';
+    html += '<span style="background:var(--primary);color:white;font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;">10-MIN EXPRESS</span>';
+    html += '<h2 style="font-family:var(--font-display);font-size:26px;font-weight:800;margin-top:10px;margin-bottom:8px;color:#ffffff;line-height:1.2;">Beat the Heat Sale 🥤</h2>';
+    html += '<p style="font-size:14px;color:rgba(255,255,255,0.9);margin-bottom:0;">Cold drinks, dairy milk boxes, ice creams delivered chilled to your door.</p>';
+    html += '</div>';
+    html += '<div style="font-size:80px;opacity:0.25;user-select:none;">🥤</div>';
+    html += '</div>';
+
+    // Carousel Dots
+    html += '<div style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:20;">';
+    html += '<span class="carousel-dot active" onclick="event.stopPropagation();DMart.Store.setSlide(0)" style="width:8px;height:8px;border-radius:50%;background:white;cursor:pointer;transition:all 0.2s;opacity:1;"></span>';
+    html += '<span class="carousel-dot" onclick="event.stopPropagation();DMart.Store.setSlide(1)" style="width:8px;height:8px;border-radius:50%;background:white;cursor:pointer;transition:all 0.2s;opacity:0.5;"></span>';
+    html += '<span class="carousel-dot" onclick="event.stopPropagation();DMart.Store.setSlide(2)" style="width:8px;height:8px;border-radius:50%;background:white;cursor:pointer;transition:all 0.2s;opacity:0.5;"></span>';
+    html += '</div>';
+
+    html += '</div>'; // promo-carousel
     html += '</div>';
 
     /* Store Content Container */
@@ -317,6 +358,7 @@
 
   /* ---- init ---- */
   Store.init = function () {
+    Store.startSlideShow();
     /* Sort */
     var sortSel = document.getElementById('sort-select');
     if (sortSel) {
@@ -575,6 +617,62 @@
     overlay.addEventListener('click', function (e) {
       if (e.target === overlay) overlay.remove();
     });
+  };
+
+  /* ---- Promo Slide Show ---- */
+  var currentSlide = 0;
+  var slideInterval = null;
+
+  Store.setSlide = function (idx) {
+    currentSlide = idx;
+    var slides = document.querySelectorAll('.carousel-slide');
+    var dots = document.querySelectorAll('.carousel-dot');
+    if (slides.length === 0) return;
+    
+    slides.forEach(function (slide, sIdx) {
+      if (sIdx === idx) {
+        slide.style.opacity = '1';
+        slide.style.zIndex = '10';
+        slide.classList.add('active');
+      } else {
+        slide.style.opacity = '0';
+        slide.style.zIndex = '1';
+        slide.classList.remove('active');
+      }
+    });
+
+    dots.forEach(function (dot, dIdx) {
+      if (dIdx === idx) {
+        dot.style.opacity = '1';
+        dot.style.transform = 'scale(1.2)';
+        dot.classList.add('active');
+      } else {
+        dot.style.opacity = '0.5';
+        dot.style.transform = 'scale(1)';
+        dot.classList.remove('active');
+      }
+    });
+  };
+
+  Store.nextSlide = function () {
+    var slides = document.querySelectorAll('.carousel-slide');
+    if (slides.length === 0) return;
+    var next = (currentSlide + 1) % slides.length;
+    Store.setSlide(next);
+  };
+
+  Store.startSlideShow = function () {
+    if (slideInterval) clearInterval(slideInterval);
+    slideInterval = setInterval(function () {
+      Store.nextSlide();
+    }, 4000);
+  };
+
+  Store.stopSlideShow = function () {
+    if (slideInterval) {
+      clearInterval(slideInterval);
+      slideInterval = null;
+    }
   };
 
   Store.changeVariant = function (selectEl, currentProductId) {
